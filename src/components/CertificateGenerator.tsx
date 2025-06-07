@@ -12,9 +12,7 @@ const CertificateGenerator: React.FC = () => {
   const [validity, setValidity] = useState(NaN)
   const [exipryDate, setExpiryDate] = useState<string | null>(null);
 
-  // Styling variables
-  const [cnSize, setCnSize] = useState("6xl");
-  const [cnPosition, setCnPosition] = useState("center");
+
 
 
   const certificateRef = useRef<HTMLDivElement>(null);
@@ -56,7 +54,7 @@ const CertificateGenerator: React.FC = () => {
           ref={certificateRef}
           className="bg-white border-4 border-yellow-600 p-10 w-[900px] h-[600px] rounded-md shadow-md flex flex-col justify-between"
         >
-          <div className={`text-${cnSize} font-bold text-${cnPosition}`}>
+          <div className={`text-6xl font-bold text-center`}>
             <h1 className="text-center">{certificateName || "Certificate Title"}</h1>
           </div>
 
