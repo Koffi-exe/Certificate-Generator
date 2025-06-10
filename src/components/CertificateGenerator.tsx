@@ -7,13 +7,15 @@ const CertificateGenerator: React.FC = () => {
   const [certificateDescription, setCertificateDescription] = useState(
     "This is to certify that the individual has successfully completed the required criteria."
   );
-  const [receiverName, setReceiverName] = useState("Your Name");
+  const [receiverName, setReceiverName] = useState<string>("Your Name");
+  const [receiverColor, setReceiverColor] = useState<string>("text-yellow-600")
   const [issueDate, setIssueDate] = useState("");
-  const [validity, setValidity] = useState(NaN)
+  const [validity, setValidity] = useState(NaN);
   const [exipryDate, setExpiryDate] = useState<string | null>(null);
-
-
-
+  const [certificateBackground, setCertificateBackground] =
+    useState<string>("white");
+  const [borderColor, setBorderColor] = useState<string>('border-Certificate-yellow')
+  const [textColor, setTextColor] = useState<string>('text-black')
 
   const certificateRef = useRef<HTMLDivElement>(null);
 
@@ -21,8 +23,8 @@ const CertificateGenerator: React.FC = () => {
     const timestamp = Date.now();
     const date = new Date(timestamp);
     const readable = date.toLocaleDateString();
-    setIssueDate(readable);
     const expiry = new Date(date.setFullYear(date.getFullYear() + validity));
+    setIssueDate(readable);
     setExpiryDate(expiry.toLocaleDateString());
   };
 
@@ -44,28 +46,33 @@ const CertificateGenerator: React.FC = () => {
 
   useEffect(() => {
     generateCertificate();
-  }, [validity]);
+    console.log(certificateBackground);
+  }, [validity, certificateBackground]);
 
   return (
     <>
       {/* Certificate Preview */}
-      <div className="bg-gray-100 p-10 flex flex-col items-center">
+      <div className={`bg-gray-100 ${textColor} p-10 flex flex-col items-center`}>
         <div
           ref={certificateRef}
-          className="bg-white border-4 border-yellow-600 p-10 w-[900px] h-[600px] rounded-md shadow-md flex flex-col justify-between"
+          className={`${certificateBackground} border-4 ${borderColor} p-10 w-[900px] h-[600px] rounded-md shadow-md flex flex-col justify-between`}
         >
           <div className={`text-6xl font-bold text-center`}>
-            <h1 className="text-center">{certificateName || "Certificate Title"}</h1>
+            <h1 className="text-center">
+              {certificateName || "Certificate Title"}
+            </h1>
           </div>
 
           <div className="text-center">
             <p className="text-lg">{certificateDescription}</p>
-            <h2 className="text-4xl font-semibold underline mt-6 text-yellow-600 font-black">{receiverName}</h2>
+            <h2 className={`text-4xl underline mt-6 ${receiverColor} font-black`}>
+              {receiverName}
+            </h2>
           </div>
 
           <div className="flex justify-between text-lg mt-10">
             <p>Issued on: {issueDate}</p>
-            {!isNaN(validity)? <p>Valid until: {exipryDate}</p>: <></>}
+            {!isNaN(validity) ? <p>Valid until: {exipryDate}</p> : <></>}
           </div>
         </div>
       </div>
@@ -107,6 +114,178 @@ const CertificateGenerator: React.FC = () => {
             value={validity}
             onChange={(e) => setValidity(parseInt(e.target.value))}
           />
+        </div>
+        {/* Color and Font sections */}
+        <div className="flex gap-6 justify-center items-center">
+          {/* Background color */}
+          <div className="flex gap-1 items-center">
+            <label >Background color:</label>
+            <select
+              className="p-2 rounded-md"
+              value={certificateBackground}
+              onChange={(e) => setCertificateBackground(e.target.value)}
+            >
+              <option value="bg-white" className="py-4  bg-white">
+                White
+              </option>
+              <option
+                value="bg-Certificate-red"
+                className="w-3 h-3 rounded-full bg-Certificate-red"
+              >
+                Red
+              </option>
+              <option
+                value="bg-Certificate-purple"
+                className="w-3 h-3 rounded-full bg-Certificate-purple"
+              >
+                Purple
+              </option>
+              <option
+                value="bg-Certificate-green"
+                className="w-3 h-3 rounded-full bg-Certificate-green"
+              >
+                Green
+              </option>
+              <option
+                value="bg-Certificate-yellow"
+                className="w-3 h-3 rounded-full bg-Certificate-yellow"
+              >
+                Yellow
+              </option>
+            </select>
+          </div>
+          {/* Border color */}
+          <div className="flex gap-1 items-center">
+            <label>Border color: </label>
+            <select
+              className="p-2 rounded-md"
+              value={borderColor}
+              onChange={(e) => setBorderColor(e.target.value)}
+            >
+              <option
+                value="border-white"
+                className="w-3 h-3 rounded-full bg-white"
+              >
+                White
+              </option>
+              <option
+                value="border-Certificate-red"
+                className="w-3 h-3 rounded-full bg-Certificate-red"
+              >
+                Red
+              </option>
+              <option
+                value="border-Certificate-purple"
+                className="w-3 h-3 rounded-full bg-Certificate-purple"
+              >
+                Purple
+              </option>
+              <option
+                value="border-Certificate-green"
+                className="w-3 h-3 rounded-full bg-Certificate-green"
+              >
+                Green
+              </option>
+              <option
+                value="border-Certificate-yellow"
+                className="w-3 h-3 rounded-full bg-Certificate-yellow"
+              >
+                Yellow
+              </option>
+            </select>
+          </div>
+          {/* Text color */}
+          <div className="flex gap-1 items-center">
+            <label>Text color: </label>
+            <select
+              className="p-2 rounded-md"
+              value={textColor}
+              onChange={(e) => setTextColor(e.target.value)}
+            >
+              <option
+                value="text-black"
+                className="w-3 h-3 rounded-full bg-black text-white"
+              >
+                Black
+              </option>
+              <option
+                value="text-white"
+                className="w-3 h-3 rounded-full bg-white"
+              >
+                White
+              </option>
+              <option
+                value="text-red-600"
+                className="w-3 h-3 rounded-full bg-red-600"
+              >
+                Red
+              </option>
+              <option
+                value="text-purple-600"
+                className="w-3 h-3 rounded-full bg-purple-600"
+              >
+                Purple
+              </option>
+              <option
+                value="text-green-600"
+                className="w-3 h-3 rounded-full bg-green-600"
+              >
+                Green
+              </option>
+              <option
+                value="text-yellow-600"
+                className="w-3 h-3 rounded-full bg-yellow-600"
+              >
+                Yellow
+              </option>
+            </select>
+          </div>
+          {/* Name color */}
+          <div className="flex gap-1 items-center">
+            <label>Name color: </label>
+            <select
+              className="p-2 rounded-md"
+              value={receiverColor}
+              onChange={(e) => setReceiverColor(e.target.value)}
+            >
+              <option
+                value="text-black"
+                className="w-3 h-3 rounded-full bg-black text-white"
+              >
+                Black
+              </option>
+              <option
+                value="text-white"
+                className="w-3 h-3 rounded-full bg-white"
+              >
+                White
+              </option>
+              <option
+                value="text-red-600"
+                className="w-3 h-3 rounded-full bg-red-600"
+              >
+                Red
+              </option>
+              <option
+                value="text-purple-600"
+                className="w-3 h-3 rounded-full bg-purple-600"
+              >
+                Purple
+              </option>
+              <option
+                value="text-green-600"
+                className="w-3 h-3 rounded-full bg-green-600"
+              >
+                Green
+              </option>
+              <option
+                value="text-yellow-600"
+                className="w-3 h-3 rounded-full bg-yellow-600"
+              >
+                Yellow
+              </option>
+            </select>
+          </div>
         </div>
 
         <div className="mt-6">
